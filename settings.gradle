@@ -1,0 +1,4 @@
+rootProject.name = 'spring-cloud-discovery-version-filter'
+include 'discovery-version-filter-spring-cloud-autoconfigure'
+include 'discovery-version-filter-spring-cloud-starter'
+

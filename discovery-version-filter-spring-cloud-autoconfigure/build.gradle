@@ -1,0 +1,11 @@
+dependencies {
+  provided 'org.springframework.cloud:spring-cloud-commons'
+  provided 'org.springframework.cloud:spring-cloud-context'
+  provided 'org.springframework.boot:spring-boot-starter'
+  provided 'org.springframework.boot:spring-boot-configuration-processor', optional
+  provided 'org.springframework.cloud:spring-cloud-starter-feign'
+
+
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'org.springframework.cloud:spring-cloud-context'
+}

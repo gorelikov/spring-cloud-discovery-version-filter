@@ -1,0 +1,95 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE'
+    classpath 'io.spring.gradle:dependency-management-plugin:1.0.3.RELEASE'
+    classpath 'com.netflix.nebula:nebula-publishing-plugin:5.1.0'
+  }
+}
+
+plugins {
+  id 'base'
+  id 'maven-publish'
+  id 'com.jfrog.artifactory' version '4.1.1'
+  id 'nebula.optional-base' version '3.1.0'
+  id 'nebula.provided-base' version '3.1.0'
+  id 'nebula.info' version '3.1.0'
+  id 'nebula.nebula-release' version '4.0.1'
+}
+
+ext {
+  springBootVersion = '1.5.4.RELEASE'
+}
+
+allprojects {
+  group = 'org.some.thing.cloud.discovery'
+
+  apply plugin: 'idea'
+  apply plugin: 'maven-publish'
+  apply plugin: 'nebula.nebula-release'
+  apply plugin: 'nebula.maven-base-publish'
+
+  repositories {
+    jcenter()
+  }
+
+  apply plugin: 'idea'
+  apply plugin: 'nebula.info'
+  apply plugin: 'io.spring.dependency-management'
+
+  dependencyManagement {
+    dependencies {
+      dependencySet(group: 'org.springframework.boot', version: '1.5.4.RELEASE') {
+        entry 'spring-boot-starter-test'
+        entry 'spring-boot-starter-actuator'
+        entry 'spring-boot'
+      }
+
+      imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-starter-parent:Dalston.RELEASE'
+      }
+
+      dependency 'ch.qos.logback:logback-classic:1.2.3'
+      dependency 'org.projectlombok:lombok:1.16.18'
+
+    }
+  }
+
+  task resolveAllDependencies {
+    doLast {
+      configurations.all { it.resolve() }
+    }
+  }
+}
+
+
+subprojects {
+  apply plugin: 'java'
+  apply plugin: 'com.jfrog.artifactory'
+  apply plugin: 'nebula.provided-base'
+  apply plugin: 'nebula.optional-base'
+  apply plugin: 'nebula.source-jar'
+  apply plugin: 'nebula.maven-publish'
+
+  sourceCompatibility = 1.8
+  targetCompatibility = 1.8
+
+  dependencies {
+    provided 'org.projectlombok:lombok'
+    provided 'ch.qos.logback:logback-classic'
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+  }
+
+  compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.fork = true
+    options.forkOptions.executable = 'javac'
+    options.encoding = 'UTF-8'
+  }
+}
+
+task wrapper(type: Wrapper) {
+  gradleVersion = '4.0.2'
+}

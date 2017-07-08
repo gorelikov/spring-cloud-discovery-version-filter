@@ -1,0 +1,3 @@
+dependencies {
+  compile project(':discovery-version-filter-spring-cloud-autoconfigure')
+}

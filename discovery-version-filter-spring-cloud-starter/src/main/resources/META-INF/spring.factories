@@ -1,0 +1,6 @@
+#AutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.some.thing.cloud.discovery.version.balancer.DiscoveryAPIVersionFilterAutoConfiguration
+# Environment Post Processor
+org.springframework.boot.env.EnvironmentPostProcessor=\
+  org.some.thing.cloud.discovery.version.balancer.postprocessor.property.PropertyTranslatorPostProcessor
